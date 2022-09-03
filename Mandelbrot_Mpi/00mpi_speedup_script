@@ -1,0 +1,49 @@
+#!/bin/bash
+
+echo 1 ...; echo 2 ...; echo 3 ...
+date; pwd; echo  
+
+rm -f "Data/01speedup_mpi_block.dat" "Data/02speedup_mpi_cyclic_wbcomm.dat" "Data/03speedup_mpi_cyclic_wasync.dat" "Data/04speedup_mpi_cyclic_wpacking.dat"
+
+make 01mpi_block
+for i in 1 2 3 4 6 8 12 16 24; 
+do `$(which mpirun) --oversubscribe -np ${i} ./01mpi_block`; 
+done
+echo
+make 02mpi_cyclic_wbcomm
+for i in 1 2 3 4 6 8 12 16 24; 
+do `$(which mpirun) --oversubscribe -np ${i} ./02mpi_cyclic_wbcomm`; 
+done
+echo
+make 03mpi_cyclic_wasync
+for i in 1 2 3 4 6 8 12 16 24; 
+do `$(which mpirun) --oversubscribe -np ${i} ./03mpi_cyclic_wasync`; 
+done
+echo
+make 04mpi_cyclic_wpacking
+for i in 1 2 3 4 6 8 12 16 24; 
+do `$(which mpirun) --oversubscribe -np ${i} ./04mpi_cyclic_wpacking`; 
+done
+echo "-----------------------------------------"
+echo " Speedup Mandelbrot mpi first approach  "
+echo "-----------------------------------------"
+echo; echo "01speedup_mpi_block.dat" 
+echo; cat "Data/01speedup_mpi_block.dat"; echo; 
+echo File saved.
+
+echo "-----------------------------------------"
+echo " Speedup Mandelbrot mpi second approach "
+echo "-----------------------------------------"
+echo; echo "02speedup_mpi_cyclic_wbcomm.dat"
+echo; cat "Data/02speedup_mpi_cyclic_wbcomm.dat"; echo; 
+echo File saved.
+
+echo; echo "03speedup_mpi_cyclic_wasync.dat"
+echo; cat "Data/03speedup_mpi_cyclic_wasync.dat"; echo; 
+echo File saved.
+
+echo; echo  "04speedup_mpi_cyclic_wpacking.dat"
+echo; cat "Data/04speedup_mpi_cyclic_wpacking.dat"; echo; 
+echo File saved.
+
+echo All done

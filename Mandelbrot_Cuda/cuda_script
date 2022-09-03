@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo 1 ...; echo 2 ...; echo 3 ...
+date; pwd; echo  
+
+echo 
+echo 
+echo "--------------------------------"
+echo "      cuda_mandel run           "
+echo "--------------------------------"
+
+make 01cuda_mandel
+./01cuda_mandel
+
+echo
+echo done

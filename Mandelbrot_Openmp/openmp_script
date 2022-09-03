@@ -1,0 +1,19 @@
+#!/bin/bash
+
+rm -f "Data/01speedup_master_worker.dat" "Data/01speedup_work_pool.dat"
+echo 1 ...; echo 2 ...; echo 3 ...
+date; pwd; echo  
+
+echo 
+echo "--------------------------------"
+echo "      openmp_mandel run         "
+echo "--------------------------------"
+
+make 01openmp_master_worker
+OMP_NUM_THREADS=4 ./01openmp_master_worker
+
+make 01openmp_work_pool
+OMP_NUM_THREADS=4 ./01openmp_work_pool
+
+echo
+echo done

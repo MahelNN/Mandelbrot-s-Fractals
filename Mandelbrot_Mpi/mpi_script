@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo 1 ...; echo 2 ...; echo 3 ...
+date; pwd; echo  
+
+echo "---------------"
+echo "mpi_mandel run "
+echo "---------------"
+
+make 01mpi_block
+$(which mpirun) --oversubscribe -np 4 ./01mpi_block;  echo
+
+make 02mpi_cyclic_wbcomm
+$(which mpirun) --oversubscribe -np 4 ./02mpi_cyclic_wbcomm;  echo
+
+make 03mpi_cyclic_wasync
+$(which mpirun) --oversubscribe -np 4 ./03mpi_cyclic_wasync;  echo
+
+make 04mpi_cyclic_wpacking
+$(which mpirun) --oversubscribe -np 4 ./04mpi_cyclic_wpacking;  echo
+
+echo done

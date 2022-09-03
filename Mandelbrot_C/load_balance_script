@@ -1,0 +1,15 @@
+#!/bin/bash
+
+rm -f Data/time_per_line.dat
+
+date 
+pwd; echo
+
+echo "---------------------------------"
+echo "   Mandel load balance per CPU   "
+echo "---------------------------------"
+
+make mandel_load_balance; echo
+./mandel_load_balance
+echo data saved.
+echo done

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo "-------------------------"
+echo "Run mandel.c 10 times    "
+echo "-------------------------"
+
+make mandel
+echo
+for nb_it in 100 200 250 500 750 1000
+do 
+    rm -f "Data/Tserial${nb_it}.dat"
+    for i in {1..10}
+    do 
+        ./mandel -n ${nb_it} >> Data/Tserial${nb_it}.dat
+    done
+    echo Best Tserial out of 10 "for" nb_it = ${nb_it}:; echo 
+    cat Data/Tserial${nb_it}.dat | sort -n | head -1; echo
+done
+echo done
+
+
+echo All done

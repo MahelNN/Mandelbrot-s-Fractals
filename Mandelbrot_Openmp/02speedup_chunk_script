@@ -1,0 +1,58 @@
+#!/bin/bash
+echo 1 ...; echo 2 ...; echo 3 ...
+date; pwd; echo  
+
+echo "--------------------------------------------------"
+echo "    Speedup Mandelbrot openmp Master-Worker       "
+echo "    Chunk size                                    "
+echo "--------------------------------------------------"
+echo
+
+rm -f "Data/00speedup.dat"
+
+make 00openmp_mandel
+for chunk in 4 12 24 48 64 96
+do 
+    for i in 1 2 3 4 6 8 12 16 24 32
+    do 
+    
+        `OMP_NUM_THREADS=${i} OMP_SCHEDULE=STATIC,${chunk} ./00openmp_mandel -n 100`
+    done
+    echo
+    rm -f "Data/02speedup_mw_chunk_${chunk}.dat"
+    mv "Data/00speedup.dat" "Data/02speedup_mw_chunk_${chunk}.dat"
+    mv "Image/mandel_openmp.ppm" "Image/mandel_mw_chunk_${chunk}.ppm"
+    echo "Data/02speedup_mw_chunk_${chunk}.dat"; echo
+    cat "Data/02speedup_mw_chunk_${chunk}.dat"
+    echo done
+    
+done
+
+echo
+echo "--------------------------------------------------"
+echo "    Speedup Mandelbrot openmp Work_Pool           "
+echo "    Chunk size                                    "
+echo "--------------------------------------------------"
+echo
+
+rm -f "Data/00speedup.dat"
+
+make 00openmp_mandel
+for chunk in 4 12 24 48 64 96
+do 
+    for i in 1 2 3 4 6 8 12 16 24 32
+    do 
+    
+        `OMP_NUM_THREADS=${i} OMP_SCHEDULE=DYNAMIC,${chunk} ./00openmp_mandel -n 100`
+    done
+    echo
+    rm -f "Data/00speedup_wp_chunk_${chunk}.dat"
+    mv "Data/00speedup.dat" "Data/02speedup_wp_chunk_${chunk}.dat"
+    mv "Image/mandel_openmp.ppm" "Image/mandel_wp_chunk_${chunk}.ppm"
+    echo "Data/02speedup_wp_chunk_${chunk}.dat"; echo
+    cat "Data/02speedup_wp_chunk_${chunk}.dat"
+    echo done
+    
+done
+echo
+echo All done

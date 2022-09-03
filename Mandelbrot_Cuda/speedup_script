@@ -1,0 +1,72 @@
+#!/bin/bash
+
+echo 1 ...; echo 2 ...; echo 3 ...
+date; pwd; echo  
+
+echo "----------------------------------------"
+echo "    Speedup Mandelbrot Cuda -           "
+echo "    Grain size                          "
+echo "----------------------------------------"
+echo
+
+rm -f "Data/01speedup.dat"
+
+make ./01cuda_mandel
+for nb_it in 100 200 250 500 750 1000
+do 
+    ./01cuda_mandel -n ${nb_it}
+    echo; mv "Image/mandel_cuda.ppm" "Image/mandel_cuda_grain_${nb_it}.ppm"
+done
+
+rm -f "Data/03speedup_grain.dat"
+mv "Data/01speedup.dat" "Data/03speedup_grain.dat"
+echo "Data/03speedup_grain.dat"; echo
+cat "Data/03speedup_grain.dat"
+echo done
+echo 
+
+
+
+echo "----------------------------------------"
+echo "    Speedup Mandelbrot Cuda -           "
+echo "    Image size                          "
+echo "----------------------------------------"
+echo
+
+rm -f "Data/01speedup.dat"
+
+make ./01cuda_mandel
+
+./01cuda_mandel -d 1024 768
+echo; mv "Image/mandel_cuda.ppm" "Image/mandel_cuda_1024_768.ppm"
+
+./01cuda_mandel -d 1536 1024
+echo; mv "Image/mandel_cuda.ppm" "Image/mandel_cuda_1536_1024.ppm"
+
+./01cuda_mandel -d 2304 1024
+echo; mv "Image/mandel_cuda.ppm" "Image/mandel_cuda_2304_1024.ppm"
+
+echo
+./01cuda_mandel -d 2048 1536
+echo; mv "Image/mandel_cuda.ppm" "Image/mandel_cuda_2048_1536.ppm"
+
+echo
+./01cuda_mandel -d 2304 2048
+echo; mv "Image/mandel_cuda.ppm" "Image/mandel_cuda_2304_2048.ppm"
+
+echo
+./01cuda_mandel -d 3072 2048
+echo; mv "Image/mandel_cuda.ppm" "Image/mandel_cuda_3072_2048.ppm"
+
+./01cuda_mandel -d 4096 3072 
+echo; mv "Image/mandel_cuda.ppm" "Image/mandel_cuda_4096_3072.ppm"
+
+echo
+
+rm -f "Data/03speedup_imsize.dat"
+mv "Data/01speedup.dat" "Data/03speedup_imsize.dat"
+echo "Data/03speedup_imsize.dat"; echo
+cat "Data/03speedup_imsize.dat"
+echo done
+echo 
+echo All done

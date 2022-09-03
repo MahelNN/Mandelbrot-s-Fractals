@@ -1,0 +1,58 @@
+#!/bin/bash
+echo 1 ...; echo 2 ...; echo 3 ...
+date; pwd; echo  
+
+echo "--------------------------------------------------"
+echo "    Speedup Mandelbrot openmp Master-Worker -     "
+echo "    Grain size                                    "
+echo "--------------------------------------------------"
+echo
+
+rm -f "Data/01speedup_master_worker.dat"
+
+make 01openmp_master_worker
+for nb_it in 100 200 250 500 750 1000
+do 
+    for i in 1 2 3 4 6 8 12 16 24 32
+    do 
+    
+        `OMP_NUM_THREADS=${i} ./01openmp_master_worker -n ${nb_it}`
+    done
+    echo
+    rm -f "Data/03speedup_mw_Gs_${nb_it}.dat"
+    mv "Data/01speedup_master_worker.dat" "Data/03speedup_mw_Gs_${nb_it}.dat"
+    mv "Image/mandel_openmp_master_worker.ppm" "Image/mandel_mw_Gs_${nb_it}.ppm"
+    echo "Data/03speedup_mw_Gs_${nb_it}.dat"; echo
+    cat "Data/03speedup_mw_Gs_${nb_it}.dat"
+    echo done
+    
+done
+
+
+echo "--------------------------------------------------"
+echo "    Speedup Mandelbrot openmp Work-Pool -     "
+echo "    Grain size                                    "
+echo "--------------------------------------------------"
+echo
+
+rm -f "Data/01speedup_work_pool.dat"
+
+make 01openmp_work_pool
+for nb_it in 100 200 250 500 750 1000
+do 
+    for i in 1 2 3 4 6 8 12 16 24 32
+    do 
+    
+        `OMP_NUM_THREADS=${i} ./01openmp_work_pool -n ${nb_it}`
+    done
+    echo
+    rm -f "Data/03speedup_wp_Gs_${nb_it}.dat"
+    mv "Data/01speedup_work_pool.dat" "Data/03speedup_wp_Gs_${nb_it}.dat"
+    mv "Image/mandel_openmp_work_pool.ppm" "Image/mandel_wp_Gs_${nb_it}.ppm"
+    echo "Data/03speedup_wp_Gs_${nb_it}.dat"; echo
+    cat "Data/03speedup_wp_Gs_${nb_it}.dat"
+    echo done
+    
+done
+echo 
+echo All done
